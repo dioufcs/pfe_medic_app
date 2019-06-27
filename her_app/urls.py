@@ -26,6 +26,7 @@ router.register('dossiers', views.DossierViewSet)
 router.register('users', views.UserViewSet)
 router.register('antecedants', views.AntecedantViewSet)
 router.register('consultations', views.ConsultationViewSet)
+router.register('examens', views.ExamenViewSet)
 
 urlpatterns = [
     path('', include(router.urls)),

@@ -51,6 +51,10 @@ class ConsultationViewSet(viewsets.ModelViewSet):
     queryset = Consultation.objects.all()
     serializer_class = ConsultationSerializer
 
+class ExamenViewSet(viewsets.ModelViewSet):
+    queryset = ExamenParaclinique.objects.all()
+    serializer_class = ExamensSerializer
+
 
 @api_view(['GET'])
 def current_user(request):
@@ -96,8 +100,14 @@ def examen_consultation(request, foo):
 
 @api_view(['GET'])
 def fichier_examen(request, foo):
-    fichier = FichierExamen.objects.filter(examenparaclinique_id=foo)
-    serializer = FichiersSerializer(fichier, many=True)
+    fichier = FichierExamen.objects.get(examenparaclinique_id=foo)
+    serializer = FichiersSerializer(fichier)
+    return Response(serializer.data)
+
+@api_view(['GET'])
+def fichier_examen(request, foo):
+    fichier = FichierExamen.objects.get(examenparaclinique_id=foo)
+    serializer = FichiersSerializer(fichier)
     return Response(serializer.data)
 
 
