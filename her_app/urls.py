@@ -27,6 +27,7 @@ router.register('users', views.UserViewSet)
 router.register('antecedants', views.AntecedantViewSet)
 router.register('consultations', views.ConsultationViewSet)
 router.register('examens', views.ExamenViewSet)
+router.register('lieus', views.LieuViewSet)
 
 urlpatterns = [
     path('', include(router.urls)),
@@ -35,5 +36,12 @@ urlpatterns = [
     path('consultation/<int:foo>/', views.consultation_patient),
     path('hypothese/<int:foo>/', views.hypothese_consultation),
     path('examen/<int:foo>/', views.examen_consultation),
-    path('fichier/<int:foo>/', views.fichier_examen)
+    path('fichier/<int:foo>/', views.fichier_examen),
+    path('classification/<slug:foo>/', views.arrythmia_class),
+    path('classification2/', views.classification2),
+    path('post_diagnostic/<int:foo>/', views.post_diagnostic),
+    path('anomalies/<int:foo>/', views.anomalies),
+    path('medecins_appel/', views.medecins_appel),
+    path('medecins_lieu/<int:foo>/', views.medecins_lieu),
+
 ]

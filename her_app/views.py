@@ -51,9 +51,14 @@ class ConsultationViewSet(viewsets.ModelViewSet):
     queryset = Consultation.objects.all()
     serializer_class = ConsultationSerializer
 
+
 class ExamenViewSet(viewsets.ModelViewSet):
     queryset = ExamenParaclinique.objects.all()
     serializer_class = ExamensSerializer
+
+class LieuViewSet(viewsets.ModelViewSet):
+    queryset = LieuTravail.objects.all()
+    serializer_class = LieuTravailSerializer
 
 
 @api_view(['GET'])
@@ -69,7 +74,7 @@ def current_user(request):
 @api_view(['GET'])
 def nom_medecin(request, foo):
     medecin = Medecin.objects.get(user__username=foo)
-    return Response({"nom": medecin.nom + " " + medecin.prenom, "specialite": medecin.specialite})
+    return Response({"nom": medecin.nom + " " + medecin.prenom, "specialite": medecin.specialite, "id": medecin.id})
 
 
 @api_view(['GET'])
@@ -85,6 +90,7 @@ def consultation_patient(request, foo):
     serializer = ConsultationSerializer(consultations, many=True)
     return Response(serializer.data)
 
+
 @api_view(['GET'])
 def hypothese_consultation(request, foo):
     hypotheses = HypotheseDiagnostique.objects.filter(consultation_id=foo)
@@ -98,17 +104,68 @@ def examen_consultation(request, foo):
     serializer = ExamensSerializer(examens, many=True)
     return Response(serializer.data)
 
-@api_view(['GET'])
-def fichier_examen(request, foo):
-    fichier = FichierExamen.objects.get(examenparaclinique_id=foo)
-    serializer = FichiersSerializer(fichier)
-    return Response(serializer.data)
 
 @api_view(['GET'])
 def fichier_examen(request, foo):
     fichier = FichierExamen.objects.get(examenparaclinique_id=foo)
     serializer = FichiersSerializer(fichier)
     return Response(serializer.data)
+
+
+@api_view(['GET'])
+def fichier_examen(request, foo):
+    fichier = FichierExamen.objects.get(examenparaclinique_id=foo)
+    serializer = FichiersSerializer(fichier)
+    return Response(serializer.data)
+
+
+@api_view(['GET'])
+def arrythmia_class(request, foo):
+    from .ecgClass import ecg_class
+
+    anomalies = Anomalies.objects.filter(lettre=ecg_class())
+    seriliazer = AnomaliessSerializer(anomalies, many=True)
+    return Response(seriliazer.data)
+
+
+@api_view(['GET'])
+def classification2(request):
+    from .ecgClass import categorieClasse
+    return Response({"classe": categorieClasse(2)})
+
+@api_view(['GET'])
+def classification2(request):
+    from .ecgClass import categorieClasse
+    return Response({"classe": categorieClasse(2)})
+
+@api_view(['POST'])
+def post_diagnostic(request, foo):
+    consultation = Consultation.objects.get(id=foo)
+    print("Request : "+str(request.data))
+    consultation.diagnostic = request.data['data']['diagnostic']
+    consultation.save()
+    return Response({"classe": "essai that"})
+
+
+@api_view(['GET'])
+def anomalies(request, foo):
+    anomalies = Anomalies.objects.filter(lettre=foo)
+    seriliazer = AnomaliessSerializer(anomalies, many=True)
+    return Response(seriliazer.data)
+
+@api_view(['GET'])
+def medecins_appel(request):
+    medecins = Medecin.objects.all()
+    seriliazer = MedecinSerializer(medecins, many=True)
+    data = seriliazer.data
+    return Response(data)
+
+@api_view(['GET'])
+def medecins_lieu(request, foo):
+    lieu = LieuTravail.objects.get(medecin_id=foo)
+    seriliazer = LieuTravailSerializer(lieu)
+    data = seriliazer.data
+    return Response(data)
 
 
 class UserList(APIView):

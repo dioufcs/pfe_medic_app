@@ -59,6 +59,23 @@ class FichiersSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
+class ClassesSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ClassesArrythmie
+        fields = '__all__'
+
+
+class AnomaliessSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Anomalies
+        fields = '__all__'
+
+class LieuTravailSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = LieuTravail
+        fields = '__all__'
+
+
 class UserSerializerWithToken(serializers.ModelSerializer):
     token = serializers.SerializerMethodField()
     password = serializers.CharField(write_only=True)

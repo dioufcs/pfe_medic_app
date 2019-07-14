@@ -10,6 +10,8 @@ models = [Medecin,
           Traitement,
           HypotheseDiagnostique,
           ExamenParaclinique,
-          FichierExamen]
+          FichierExamen,
+          ClassesArrythmie,
+          Anomalies]
 
 admin.site.register(models)

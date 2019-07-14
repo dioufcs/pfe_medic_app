@@ -20,6 +20,8 @@ class Utilisateur(models.Model):
 
 class Medecin(Utilisateur):
     specialite = models.CharField(max_length=50, blank=False)
+    ville = models.CharField(max_length=50, blank=True, null=True)
+    nomHopital = models.CharField(max_length=50, blank=True, null=True)
 
 
 class Patient(Utilisateur):
@@ -31,7 +33,8 @@ class Patient(Utilisateur):
 class LieuTravail(models.Model):
     ville = models.CharField(max_length=50, blank=False)
     nomHopital = models.CharField(max_length=50, blank=False)
-    medecin = models.ManyToManyField(Medecin, related_name='lieuTravails')
+    medecin = models.OneToOneField(Medecin, related_name='lieuTravails', on_delete=models.CASCADE, blank=True,
+                                   null=True)
 
 
 class DossierMedical(models.Model):
@@ -58,6 +61,7 @@ class Consultation(models.Model):
     dateConsultation = models.DateField()
     finConsultation = models.BooleanField(default=False)
     medecin = models.ForeignKey(Medecin, on_delete=models.CASCADE, default=1)
+    diagnostic = models.CharField(max_length=300, blank=True)
     dossier = models.ForeignKey(DossierMedical, on_delete=models.CASCADE)
 
 
@@ -88,3 +92,12 @@ class FichierExamen(models.Model):
     nomFichier = models.CharField(max_length=50, blank=False)
     fichier = models.FileField(blank=True)
     examenparaclinique = models.OneToOneField(ExamenParaclinique, on_delete=models.CASCADE)
+
+
+class ClassesArrythmie(models.Model):
+    lettreClasse = models.CharField(max_length=1, blank=False)
+
+
+class Anomalies(models.Model):
+    nomAnomalie = models.CharField(max_length=100, blank=False)
+    lettre = models.ManyToManyField(ClassesArrythmie)
